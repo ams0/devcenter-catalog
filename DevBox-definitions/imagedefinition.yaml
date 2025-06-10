@@ -32,7 +32,7 @@ tasks:
     parameters:
       repositoryUrl: https://github.com/ams0/devcenter-catalog.git
       directory: C:\git
-  - name: git-clone-large-files
+  - name: git-clone
     description: Clone this repository into C:\git
     parameters:
       repositoryUrl: https://github.com/tensorflow/tensorflow
