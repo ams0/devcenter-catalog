@@ -1,0 +1,39 @@
+$schema: "1.0"
+name: "asml-customization-devcenter"
+image: microsoftvisualstudio_visualstudioplustools_vs-2022-ent-general-win11-m365-gen2
+tasks:
+  - name: powershell
+    description: Download custom background image
+    parameters:
+      script: |
+        Invoke-WebRequest -Uri "https://contostore.blob.core.windows.net/public/asml_background.png" -OutFile "C:\custom-background.jpg"
+  - name: powershell
+    description: Set custom background as wallpaper
+    parameters:
+      script: |
+        $code = @"
+        using System.Runtime.InteropServices;
+        public class Wallpaper {
+          [DllImport("user32.dll", SetLastError = true)]
+          public static extern bool SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
+        }
+        "@
+        Add-Type $code
+        $path = "C:\custom-background.jpg"
+        [Wallpaper]::SystemParametersInfo(20, 0, $path, 3)
+  - name: winget
+    parameters:
+      package: Microsoft.VisualStudioCode
+  - name: winget
+    parameters:
+      package: Vivaldi.Vivaldi
+  - name: git-clone
+    description: Clone this repository into C:\git
+    parameters:
+      repositoryUrl: https://github.com/ams0/devcenter-catalog.git
+      directory: C:\git
+  - name: git-clone
+    description: Clone this repository into C:\git
+    parameters:
+      repositoryUrl: https://github.com/tensorflow/tensorflow
+      directory: C:\git
